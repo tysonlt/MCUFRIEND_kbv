@@ -94,7 +94,7 @@
   #else
   #include <STM32F1XX.h>
   #endif
-#elif defined(STM32L476xx)
+#elif defined(STM32L476xx) || defined(STM32L433xx)
   #include <STM32L4XX.h>
 #elif defined(STM32F401xE) || defined(STM32F411xE) || defined(STM32F446xx)
   #include <STM32F4XX.h>
