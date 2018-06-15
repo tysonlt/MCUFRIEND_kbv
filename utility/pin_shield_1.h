@@ -10,6 +10,17 @@
 #define LPC1768 1768
 #define LPC2103 2103
 #define LPC2148 2148
+
+#define ISTARGET_NUCLEO64 (0 \
+        || defined(TARGET_NUCLEO_F072RB) \
+        || defined(TARGET_NUCLEO_F103RB) \
+        || defined(TARGET_NUCLEO_F401RE) \
+        || defined(TARGET_NUCLEO_F411RE) \
+        || defined(TARGET_NUCLEO_F446RE) \
+        || defined(TARGET_NUCLEO_L433RC_P) \
+        || defined(TARGET_NUCLEO_L476RG) \
+        )
+
 //#warning Using pin_SHIELD_1.h
 
 #if 0
@@ -182,7 +193,7 @@
 #define PIN_INPUT(port, pin) {if (pin > 7) PIN_MODE4((port)->CRH, (pin&7), 0x4); else  PIN_MODE4((port)->CRL, pin, 0x4); }  //input
 
 
-#elif defined(NUCLEO) || defined(TARGET_NUCLEO_F072RB) || defined(TARGET_NUCLEO_F401RE) || defined(TARGET_NUCLEO_F411RE) || defined(TARGET_NUCLEO_F103RB) || defined(TARGET_NUCLEO_L476RG) || defined(TARGET_NUCLEO_F446RE)
+#elif defined(NUCLEO) || ISTARGET_NUCLEO64
 #define PIN_MODE2(reg, pin, mode) reg=(reg&~(0x3<<((pin)<<1)))|(mode<<((pin)<<1))
 #if __MBED__
 #warning MBED knows everything
