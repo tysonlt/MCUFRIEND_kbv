@@ -2,7 +2,7 @@
 
 //#define USE_MEGA_8BIT_PROTOSHIELD
 //#define USE_MEGA_8BIT_SHIELD      // 4.7sec Mega2560 Shield
-//#define USE_MEGA_16BIT_SHIELD     // 2.14sec Mega2560 Shield 
+#define USE_MEGA_16BIT_SHIELD     // 2.14sec Mega2560 Shield 
 //#define USE_BLD_BST_MEGA32U4
 //#define USE_BLD_BST_MEGA2560      // 12.23sec Uno Shield (17.38s C)
 //#define USE_DUE_8BIT_PROTOSHIELD
@@ -14,6 +14,19 @@
 //#define USE_ELECHOUSE_DUE_16BIT_SHIELD    //Untested yet
 //#define USE_MY_BLUEPILL
 //#define USE_ADIGITALEU_TEENSY
+
+/*
+HX8357C  tWC = 50ns  tRCFM = 160ns  tRC = 160ns
+ILI9320  tWC =100ns  tRCFM = 300ns  tRC = 300ns
+ILI9341  tWC = 66ns  tRCFM = 450ns  tRC = 160ns
+ILI9481  tWC =100ns  tRCFM = 450ns  tRC = 450ns
+ILI9486  tWC = 66ns  tRCFM = 450ns  tRC = 160ns (tWCFM= 286ns)
+ILI9486L tWC = 50ns  tRCFM = 450ns  tRC = 160ns
+ILI9488  tWC = 30ns  tRCFM = 450ns  tRC = 160ns
+RM68140  tWC = 50ns  tRCFM = 450ns  tRC = 160ns (tWCFM= 119ns)
+SPFD5408 tWC =125ns  tRCFM = 450ns  tRC = 450ns
+SSD1289  tWC =100ns  tRCFM =1000ns  tRC =1000ns (tWCFM= 238ns)
+*/
 
 #if 0
 
@@ -149,10 +162,11 @@ static __attribute((always_inline)) void write_8(uint8_t val)
 #define read_16()     ( (PINA<<8) | (PINC) )
 #define setWriteDir() { DDRC = 0xFF; DDRA = 0xff; }
 #define setReadDir()  { DDRC = 0x00; DDRA = 0x00; }
-#define write8(x)     { write_8(x); WR_STROBE; }
-#define write16(x)    { write_16(x); WR_STROBE; }
+//#define write8(x)     { write_8(x); WR_STROBE; }
+#define write8(x)     { write16((x) & 0xFF); }
+#define write16(x)    { write_16(x); WR_ACTIVE; WR_STROBE; }
 #define READ_16(dst)  { RD_STROBE; dst = read_16(); RD_IDLE; }
-#define READ_8(dst)   { READ_16(dst); dst &= 0xFFFF; }
+#define READ_8(dst)   { READ_16(dst); dst &= 0x00FF; }
 
 #define PIN_LOW(p, b)        (p) &= ~(1<<(b))
 #define PIN_HIGH(p, b)       (p) |= (1<<(b))
@@ -440,7 +454,7 @@ static __attribute((always_inline)) void write_8(uint8_t val)
 					  }
 #define write8(x)     { write16(x & 0xFF); }
 // ILI9486 is slower than ILI9481
-#define write16(x)    { write_16(x); WR_ACTIVE2; WR_STROBE; }
+#define write16(x)    { write_16(x); WR_ACTIVE8; WR_STROBE; WR_IDLE4;}
 #define READ_16(dst)  { RD_STROBE; RD_ACTIVE4; dst = read_16(); RD_IDLE; RD_IDLE; RD_IDLE; }
 #define READ_8(dst)   { READ_16(dst); dst &= 0xFF; }
 
