@@ -1,4 +1,4 @@
-#define USE_SPECIAL             //check for custom drivers
+//#define USE_SPECIAL             //check for custom drivers
 
 #define WR_ACTIVE2  {WR_ACTIVE; WR_ACTIVE;}
 #define WR_ACTIVE4  {WR_ACTIVE2; WR_ACTIVE2;}
@@ -352,7 +352,7 @@ void write_8(uint8_t x)
 // MapleCore: __STM32F1__
 #elif defined(__STM32F1__) || defined(ARDUINO_ARCH_STM32)   //MapleCore or ST Core
 #define IS_NUCLEO64 ( defined(ARDUINO_STM_NUCLEO_F103RB) \
-                   || defined(ARDUINO_NUCLEO_F072RB) \
+                   || defined(ARDUINO_NUCLEO_F072RB) || defined(ARDUINO_NUCLEO_L433RC) \
                    || defined(ARDUINO_NUCLEO_F030R8) || defined(ARDUINO_NUCLEO_F091RC) \
                    || defined(ARDUINO_NUCLEO_F103RB) || defined(ARDUINO_NUCLEO_F303RE) \
                    || defined(ARDUINO_NUCLEO_F401RE) || defined(ARDUINO_NUCLEO_F411RE) \
@@ -448,6 +448,12 @@ void write_8(uint8_t x)
 #define WRITE_DELAY { }
 #define READ_DELAY  { RD_ACTIVE; }
 #define GPIO_INIT()   { RCC->AHBENR |= RCC_AHBENR_GPIOAEN | RCC_AHBENR_GPIOBEN | RCC_AHBENR_GPIOCEN; }
+#define PIN_OUTPUT(port, pin) PIN_MODE2((port)->MODER, pin, 0x1)
+
+#elif defined(STM32L433xx)
+#define WRITE_DELAY { WR_ACTIVE2; }
+#define READ_DELAY  { RD_ACTIVE4; RD_ACTIVE; }
+#define GPIO_INIT()   { RCC->AHB2ENR |= RCC_AHB2ENR_GPIOAEN | RCC_AHB2ENR_GPIOBEN | RCC_AHB2ENR_GPIOCEN; }
 #define PIN_OUTPUT(port, pin) PIN_MODE2((port)->MODER, pin, 0x1)
 
 #elif defined(STM32L476xx)
