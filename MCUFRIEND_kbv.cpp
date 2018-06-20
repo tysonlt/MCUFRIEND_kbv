@@ -11,7 +11,7 @@
 //#define SUPPORT_8347D             //HX8347-D, HX8347-G, HX8347-I, HX8367-A +520 bytes, 0.27s
 //#define SUPPORT_8347A             //HX8347-A +500 bytes, 0.27s
 //#define SUPPORT_8352A             //HX8352A +486 bytes, 0.27s
-//#define SUPPORT_8352B             //HX8352B
+#define SUPPORT_8352B             //HX8352B
 //#define SUPPORT_8357D_GAMMA       //monster 34 byte 
 //#define SUPPORT_9225              //ILI9225-B, ILI9225-G ID=0x9225, ID=0x9226 +380 bytes
 //#define SUPPORT_9326_5420         //ILI9326, SPFD5420 +246 bytes

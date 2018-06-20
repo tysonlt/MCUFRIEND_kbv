@@ -352,6 +352,7 @@ void write_8(uint8_t x)
 // MapleCore: __STM32F1__
 #elif defined(__STM32F1__) || defined(ARDUINO_ARCH_STM32)   //MapleCore or ST Core
 #define IS_NUCLEO64 ( defined(ARDUINO_STM_NUCLEO_F103RB) \
+                   || defined(ARDUINO_NUCLEO_F072RB) \
                    || defined(ARDUINO_NUCLEO_F030R8) || defined(ARDUINO_NUCLEO_F091RC) \
                    || defined(ARDUINO_NUCLEO_F103RB) || defined(ARDUINO_NUCLEO_F303RE) \
                    || defined(ARDUINO_NUCLEO_F401RE) || defined(ARDUINO_NUCLEO_F411RE) \
@@ -396,6 +397,13 @@ void write_8(uint8_t x)
 #elif defined(STM32F030x8)
 #define WRITE_DELAY { }
 #define READ_DELAY  { RD_ACTIVE; }
+#define GPIO_INIT()   { RCC->AHBENR |= RCC_AHBENR_GPIOAEN | RCC_AHBENR_GPIOBEN | RCC_AHBENR_GPIOCEN; }
+#define PIN_OUTPUT(port, pin) PIN_MODE2((port)->MODER, pin, 0x1)
+
+#elif defined(STM32F072xB)
+#define WRITE_DELAY { }
+#define IDLE_DELAY  { }
+#define READ_DELAY  { }
 #define GPIO_INIT()   { RCC->AHBENR |= RCC_AHBENR_GPIOAEN | RCC_AHBENR_GPIOBEN | RCC_AHBENR_GPIOCEN; }
 #define PIN_OUTPUT(port, pin) PIN_MODE2((port)->MODER, pin, 0x1)
 

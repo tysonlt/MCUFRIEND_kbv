@@ -8,7 +8,7 @@
 //#define USE_DUE_8BIT_PROTOSHIELD
 //#define USE_DUE_16BIT_SHIELD        //RD on PA15 (D24) 
 //#define USE_BOBCACHELOT_TEENSY
-//#define USE_OPENSMART_SHIELD_PINOUT_UNO
+#define USE_OPENSMART_SHIELD_PINOUT_UNO
 //#define USE_OPENSMART_SHIELD_PINOUT_MEGA
 //#define USE_OPENSMART_SHIELD_PINOUT_DUE //thanks Michel53
 //#define USE_ELECHOUSE_DUE_16BIT_SHIELD    //Untested yet
@@ -16,16 +16,18 @@
 //#define USE_ADIGITALEU_TEENSY
 
 /*
-HX8357C  tWC = 50ns  tRCFM = 160ns  tRC = 160ns
-ILI9320  tWC =100ns  tRCFM = 300ns  tRC = 300ns
-ILI9341  tWC = 66ns  tRCFM = 450ns  tRC = 160ns
-ILI9481  tWC =100ns  tRCFM = 450ns  tRC = 450ns
-ILI9486  tWC = 66ns  tRCFM = 450ns  tRC = 160ns (tWCFM= 286ns)
-ILI9486L tWC = 50ns  tRCFM = 450ns  tRC = 160ns
-ILI9488  tWC = 30ns  tRCFM = 450ns  tRC = 160ns
-RM68140  tWC = 50ns  tRCFM = 450ns  tRC = 160ns (tWCFM= 119ns)
-SPFD5408 tWC =125ns  tRCFM = 450ns  tRC = 450ns
-SSD1289  tWC =100ns  tRCFM =1000ns  tRC =1000ns (tWCFM= 238ns)
+HX8357C  tWC = 50ns  tWRH = 15ns  tRCFM = 450ns  tRC = 160ns
+ILI9320  tWC =100ns  tWRH = 50ns  tRCFM = 300ns  tRC = 300ns
+ILI9341  tWC = 66ns  tWRH = 15ns  tRCFM = 450ns  tRC = 160ns
+ILI9481  tWC =100ns  tWRH = 30ns  tRCFM = 450ns  tRC = 450ns
+ILI9486  tWC = 66ns  tWRH = 15ns  tRCFM = 450ns  tRC = 160ns (tWCFM= 286ns on mystery 9486_16)
+ILI9486L tWC = 50ns  tWRH = 15ns  tRCFM = 450ns  tRC = 160ns
+ILI9488  tWC = 30ns  tWRH = 15ns  tRCFM = 450ns  tRC = 160ns
+RM68140  tWC = 50ns  tWRH = 15ns  tRCFM = 450ns  tRC = 160ns (tWCFM= 119ns)
+SPFD5408 tWC =125ns  tWRH = 70ns  tRCFM = 450ns  tRC = 450ns
+SSD1289  tWC =100ns  tWRH = 50ns  tRCFM =1000ns  tRC =1000ns (tWCFM= 238ns)
+SSD1963  tWC = 26ns  tWRH = 13ns  tRCFM = 110ns  tRC =  72ns
+ST7789V  tWC = 66ns  tWRH = 15ns  tRCFM = 450ns  tRC = 160ns
 */
 
 #if 0
