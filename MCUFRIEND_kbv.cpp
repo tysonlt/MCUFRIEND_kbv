@@ -16,7 +16,7 @@
 //#define SUPPORT_9225              //ILI9225-B, ILI9225-G ID=0x9225, ID=0x9226 +380 bytes
 //#define SUPPORT_9326_5420         //ILI9326, SPFD5420 +246 bytes
 //#define SUPPORT_9342              //costs +114 bytes
-//#define SUPPORT_9806              //UNTESTED
+#define SUPPORT_9806              //UNTESTED
 #define SUPPORT_9488_555          //costs +230 bytes, 0.03s / 0.19s
 #define SUPPORT_B509_7793         //R61509, ST7793 +244 bytes
 #define OFFSET_9327 32            //costs about 103 bytes, 0.08s
@@ -2753,8 +2753,8 @@ case 0x4532:    // thanks Leodino
 
 #ifdef SUPPORT_9806
     case 0x9806:
-        _lcd_capable = AUTO_READINC | MIPI_DCS_REV1 | MV_AXIS | READ_24BITS;
-        // from ZinggJM
+        _lcd_capable = AUTO_READINC | MIPI_DCS_REV1 | MV_AXIS | READ_24BITS | INVERT_RGB | INVERT_SS;
+        // from ZinggJM.  thanks indio99
         static const uint8_t ILI9806_regValues[] PROGMEM = {
             (0xFF), 3, /* EXTC Command Set enable register*/ 0xFF, 0x98, 0x06,
             (0xBA), 1, /* SPI Interface Setting*/0xE0,
@@ -2779,9 +2779,9 @@ case 0x4532:    // thanks Leodino
         };
         table8_ads = ILI9806_regValues, table_size = sizeof(ILI9806_regValues);
         p16 = (int16_t *) & HEIGHT;
-        *p16 = 480;
+        *p16 = 854;   //panels can be 480x864, 480x854, 480x800, 480x840, 480x720 
         p16 = (int16_t *) & WIDTH;
-        *p16 = 854;
+        *p16 = 480;
         break;
 #endif
     default:
