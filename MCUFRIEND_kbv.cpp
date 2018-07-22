@@ -242,8 +242,10 @@ uint16_t MCUFRIEND_kbv::readID(void)
         return 0xAC11;
     ret = readReg32(0xD3);      //for ILI9488, 9486, 9340, 9341
     msb = ret >> 8;
-    if (msb == 0x93 || msb == 0x94 || msb == 0x98 || msb == 0x77 || msb == 0x16)
+    if (msb == 0x93 || msb == 0x94 || msb == 0x98 || msb == 0x77 || msb == 0x16) {
+        readReg32();            //to keep ILI9806 happy
         return ret;             //0x9488, 9486, 9340, 9341, 7796
+    }
     if (ret == 0x00D3 || ret == 0xD3D3)
         return ret;             //16-bit write-only bus
 /*
@@ -499,7 +501,7 @@ void MCUFRIEND_kbv::drawPixel(int16_t x, int16_t y, uint16_t color)
 void MCUFRIEND_kbv::setAddrWindow(int16_t x, int16_t y, int16_t x1, int16_t y1)
 {
 #if defined(OFFSET_9327)
-	if (_lcd_ID == 0x9327) {
+	if (_lcd_ID == 0x9327 || _lcd_ID == 0x9806) {
 	    if (rotation == 2) y += OFFSET_9327, y1 += OFFSET_9327;
 	    if (rotation == 3) x += OFFSET_9327, x1 += OFFSET_9327;
     }
@@ -658,7 +660,7 @@ void MCUFRIEND_kbv::pushColors(const uint8_t * block, int16_t n, bool first, boo
 void MCUFRIEND_kbv::vertScroll(int16_t top, int16_t scrollines, int16_t offset)
 {
 #if defined(OFFSET_9327)
-	if (_lcd_ID == 0x9327) {
+	if (_lcd_ID == 0x9327 || _lcd_ID == 0x9806) {
 	    if (rotation == 2 || rotation == 3) top += OFFSET_9327;
     }
 #endif
@@ -666,6 +668,7 @@ void MCUFRIEND_kbv::vertScroll(int16_t top, int16_t scrollines, int16_t offset)
     int16_t vsp;
     int16_t sea = top;
 	if (_lcd_ID == 0x9327) bfa += 32;
+	if (_lcd_ID == 0x9806) bfa += 10;   //should keep 480x854 happy on 864 scanlines
     if (offset <= -scrollines || offset >= scrollines) offset = 0; //valid scroll
 	vsp = top + offset; // vertical start position
     if (offset < 0)
@@ -2768,7 +2771,7 @@ case 0x4532:    // thanks Leodino
             (0xDF), 6, /* Engineering Setting*/0x00, 0x00, 0x00, 0x00, 0x00, 0x02,
             (0xF3), 1, /* DVDD Voltage Setting*/0x74,
             (0xB4), 3, /* Display Inversion Control*/0x00, 0x00, 0x00,
-            (0xF7), 1, /* 480x854*/0x81,
+            (0xF7), 1, 0x80, // 480x864 even though panel is 480x854
             (0xB1), 3, /* Frame Rate*/0x00, 0x10, 0x14,
             (0xF1), 3, /* Panel Timing Control*/0x29, 0x8A, 0x07,
             (0xF2), 4, /*Panel Timing Control*/0x40, 0xD2, 0x50, 0x28,
