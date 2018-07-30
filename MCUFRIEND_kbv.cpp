@@ -20,7 +20,7 @@
 #define SUPPORT_9488_555          //costs +230 bytes, 0.03s / 0.19s
 #define SUPPORT_B509_7793         //R61509, ST7793 +244 bytes
 #define OFFSET_9327 32            //costs about 103 bytes, 0.08s
-#define OFFSET_9806 96            //
+#define OFFSET_9806 10            //480x854 panel on 480x864 controller
 
 #include "MCUFRIEND_kbv.h"
 #if defined(USE_SERIAL)
@@ -362,6 +362,10 @@ void MCUFRIEND_kbv::setRotation(uint8_t r)
             d[2] = 0x3B;
             WriteCmdParamN(0xB6, 3, d);
             goto common_MC;
+#if defined(SUPPORT_9806)
+        } else if (_lcd_ID == 0x9806) {
+            val &= ~0x10;   //remove ML
+#endif
         } else if (_lcd_ID == 0x1963 || _lcd_ID == 0x9481 || _lcd_ID == 0x1511) {
             if (val & 0x80)
                 val |= 0x01;    //GS
@@ -673,7 +677,10 @@ void MCUFRIEND_kbv::vertScroll(int16_t top, int16_t scrollines, int16_t offset)
 #endif
 #if defined(OFFSET_9806)
 	if (_lcd_ID == 0x9806) {
-	    if (rotation == 2 || rotation == 3) top += OFFSET_9806;
+	    if (rotation == 2 || rotation == 3) {
+            top += OFFSET_9806;
+            offset = -offset;   //cos ML does not work
+        }
     }
 #endif
     int16_t bfa = HEIGHT - top - scrollines;  // bottom fixed area
