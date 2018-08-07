@@ -668,8 +668,8 @@ static void setReadDir()
     pinMode(LCD_D7, INPUT);
 }
 
-#define WRITE_DELAY { }
-#define READ_DELAY  { }
+#define WRITE_DELAY { WR_ACTIVE2; } //please try this with both PIN_LOW() macros
+#define READ_DELAY  { RD_IDLE4; }
 
 #define write8(x)     { write_8(x); WRITE_DELAY; WR_STROBE; }
 #define write16(x)    { uint8_t h = (x)>>8, l = x; write8(h); write8(l); }
