@@ -241,10 +241,11 @@ uint16_t MCUFRIEND_kbv::readID(void)
         return 0x7789;
     if (ret == 0xAC11)          //?unknown [xx 61 AC 11]
         return 0xAC11;
+    ret = readReg(0xD3, 1);     //for ILI9806.  should be similar to readReg32(0xD3)
+    if (ret == 0x9806) return ret; //thanks indio99
     ret = readReg32(0xD3);      //for ILI9488, 9486, 9340, 9341
     msb = ret >> 8;
-    if (msb == 0x93 || msb == 0x94 || msb == 0x98 || msb == 0x77 || msb == 0x16) {
-        readReg32(0xD3);        //to keep ILI9806 happy
+    if (msb == 0x93 || msb == 0x94 || msb == 0x77 || msb == 0x16) {
         return ret;             //0x9488, 9486, 9340, 9341, 7796
     }
     if (ret == 0x00D3 || ret == 0xD3D3)
