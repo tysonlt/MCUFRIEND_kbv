@@ -2,12 +2,12 @@
 
 //#define USE_MEGA_8BIT_PROTOSHIELD
 //#define USE_MEGA_8BIT_SHIELD      // 4.7sec Mega2560 Shield
-//#define USE_MEGA_16BIT_SHIELD     // 2.14sec Mega2560 Shield 
+//#define USE_MEGA_16BIT_SHIELD     // 2.14sec Mega2560 Shield
 //#define USE_BLD_BST_MEGA32U4
 //#define USE_BLD_BST_MEGA2560      // 12.23sec Uno Shield (17.38s C)
 //#define USE_BLD_BST_MEGA4809      // 5.43sec XPRO-Adapter (7.09s C)
 //#define USE_DUE_8BIT_PROTOSHIELD
-//#define USE_DUE_16BIT_SHIELD        //RD on PA15 (D24) 
+//#define USE_DUE_16BIT_SHIELD        //RD on PA15 (D24)
 //#define USE_BOBCACHELOT_TEENSY
 //#define USE_OPENSMART_SHIELD_PINOUT_UNO
 //#define USE_OPENSMART_SHIELD_PINOUT_MEGA
@@ -195,7 +195,7 @@ static __attribute((always_inline))
 #define setReadDir()  { VPORTA_DIR &= ~AMASK; VPORTB_DIR &= ~BMASK; VPORTC_DIR &= ~CMASK; VPORTE_DIR &= ~EMASK; VPORTF_DIR &= ~FMASK; }
 
 //#define WRITE_DELAY   { WR_ACTIVE; WR_ACTIVE; }   //6.47s no_inline
-#define WRITE_DELAY   { WR_ACTIVE2; WR_ACTIVE; }   //-Os=5.43s @20MHz always_inline. (-O1=5.41s, -O3=5.25s) 
+#define WRITE_DELAY   { WR_ACTIVE2; WR_ACTIVE; }   //-Os=5.43s @20MHz always_inline. (-O1=5.41s, -O3=5.25s)
 #define READ_DELAY    { RD_ACTIVE4; }              //ID=0x7789
 #define write8(x)     { write_8(x); WRITE_DELAY; WR_STROBE; }
 #define write16(x)    { uint8_t h = (x)>>8, l = x; write8(h); write8(l); }
@@ -261,7 +261,7 @@ static __attribute((always_inline)) void write_8(uint8_t val)
 #warning USE_MEGA_16BIT_SHIELD
 #define USES_16BIT_BUS
 #define RD_PORT PORTL
-#define RD_PIN  6        //PL6 (D43).   Graham has PA15 (D24) on Due Shield 
+#define RD_PIN  6        //PL6 (D43).   Graham has PA15 (D24) on Due Shield
 #define WR_PORT PORTG
 #define WR_PIN  2        //D39 CTE
 #define CD_PORT PORTD
@@ -290,7 +290,7 @@ static __attribute((always_inline)) void write_8(uint8_t val)
 #elif defined(__AVR_ATmega2560__) && defined(USE_MEGA_8BIT_SHIELD)
 #warning USE_MEGA_8BIT_SHIELD for vagos21
 #define RD_PORT PORTL
-#define RD_PIN  6        //PL6 (D43).   Graham has PA15 (D24) on Due Shield 
+#define RD_PIN  6        //PL6 (D43).   Graham has PA15 (D24) on Due Shield
 #define WR_PORT PORTG
 #define WR_PIN  2        //D39 CTE
 #define CD_PORT PORTD
@@ -415,7 +415,7 @@ static __attribute((always_inline)) void write_8(uint8_t val)
 
 #define read_8()      ( PIOD->PIO_PDSR & DMASK)
   #define setWriteDir() { PIOD->PIO_OER = DMASK; PIOD->PIO_PER = DMASK; }
-  #define setReadDir()  { PMC->PMC_PCER0 = (1 << ID_PIOD); PIOD->PIO_ODR = DMASK;}      
+  #define setReadDir()  { PMC->PMC_PCER0 = (1 << ID_PIOD); PIOD->PIO_ODR = DMASK;}
 #define write8(x)     { write_8(x); WR_ACTIVE; WR_STROBE; WR_IDLE; WR_IDLE; }
 #define write16(x)    { uint8_t h = (x)>>8, l = x; write8(h); write8(l); }
 #define READ_8(dst)   { RD_STROBE; RD_ACTIVE4; dst = read_8(); RD_IDLE; RD_IDLE; RD_IDLE; }
@@ -439,9 +439,9 @@ static __attribute((always_inline)) void write_8(uint8_t val)
 #define CS_PIN  2      //D27
 #define RESET_PORT PIOD
 #define RESET_PIN  3   //D28
-// configure macros for data bus 
+// configure macros for data bus
 // DB0..DB7 on PIOC1..PIOC8,  DB8..DB15 on PIOC12..PIOC19
-// 
+//
 #define CMASKH        (0xFF00<<4)
 #define CMASKL        (0x00FF<<1)
 #define CMASK         (CMASKH | CMASKL)
@@ -476,9 +476,9 @@ static __attribute((always_inline)) void write_8(uint8_t val)
 #define CS_PIN  7      //D31
 #define RESET_PORT PIOC
 #define RESET_PIN  1   //D33
-// configure macros for data bus 
+// configure macros for data bus
 // DB0..DB7 on PIOC2..PIOC9,  DB8..DB15 on PIOC12..PIOC19
-// 
+//
 #define CMASKH        (0xFF00<<4)
 #define CMASKL        (0x00FF<<2)
 #define CMASK         (CMASKH | CMASKL)
@@ -513,8 +513,8 @@ static __attribute((always_inline)) void write_8(uint8_t val)
 #define CS_PIN  8      //D40
 #define RESET_PORT PIOC
 #define RESET_PIN  9   //D41
-// configure macros for data bus 
-// 
+// configure macros for data bus
+//
 #define AMASK         ((1<<7)|(3<<14))          //PA7, PA14-PA15
 #define BMASK         (1<<26)                   //PB26
 #define CMASK         (31<<1)                   //PC1-PC5
@@ -591,8 +591,8 @@ static __attribute((always_inline)) void write_8(uint8_t val)
 #define CS_PIN  8      //D40
 #define RESET_PORT PIOC
 #define RESET_PIN  9   //D41
-// configure macros for data bus 
-// 
+// configure macros for data bus
+//
 #define AMASK         ((3<<14))                 //PA14-PA15    D23-D24
 #define BMASK         (1<<26)                   //PB26         D22
 #define DMASK         ((15<<0)|(1<<6))          //PD0-PD3, PD6 D25-D28,D29
@@ -707,7 +707,7 @@ static __attribute((always_inline)) void write_8(uint8_t val)
    GPIOC_PCOR = CMASK; GPIOD_PCOR = DMASK; \
    GPIOC_PSOR = (((d) & (1<<1)) << 2); \
    GPIOD_PSOR = (d) & DMASK; \
-  } 
+  }
   #define read_8() (          (GPIOD_PDIR & DMASK) | (GPIOC_PDIR & (1<<3)) >> 2 )
   #define setWriteDir() {GPIOC_PDDR |=  CMASK;GPIOD_PDDR |=  DMASK; }
   #define setReadDir()  {GPIOC_PDDR &= ~CMASK;GPIOD_PDDR &= ~DMASK; }
@@ -839,7 +839,7 @@ static __attribute((always_inline)) void write_8(uint8_t val)
                        GPIOB->REGS(BSRR) = (((d) & 0x0C) << 4); \
                        }
 #define read_8()      (((GPIOA->REGS(IDR) & (3<<9)) >> 9) | ((GPIOA->REGS(IDR) & (0x0F)) << 4) | ((GPIOB->REGS(IDR) & (3<<6)) >> 4))
-//                                     PA10,PA9                     PA3-PA0                         PB7,PB6  
+//                                     PA10,PA9                     PA3-PA0                         PB7,PB6
 #define setWriteDir() {GP_OUT(GPIOA, CRH, 0xFF0); GP_OUT(GPIOA, CRL, 0xFFFF); GP_OUT(GPIOB, CRL, 0xFF000000); }
 #define setReadDir()  {GP_INP(GPIOA, CRH, 0xFF0); GP_INP(GPIOA, CRL, 0xFFFF); GP_INP(GPIOB, CRL, 0xFF000000); }
 
@@ -864,13 +864,13 @@ static __attribute((always_inline)) void write_8(uint8_t val)
 #define WR_PORT GPIOA
 #define WR_PIN 5        //25 WR
 #define CD_PORT GPIOE
-#define CD_PIN 26       //24 RS 
+#define CD_PIN 26       //24 RS
 #define CS_PORT GPIOA
 #define CS_PIN 14       //26 CS
 #define RESET_PORT GPIOA
 #define RESET_PIN 15    //27 Reset
 
-#define write_8(d) { GPIOC_PDOR = d; } 
+#define write_8(d) { GPIOC_PDOR = d; }
 #define write_16(d) { GPIOC_PDOR = d; GPIOD_PDOR = (d >> 8);}
 
 #define read_8() (GPIOC_PDIR)
@@ -882,7 +882,7 @@ static __attribute((always_inline)) void write_8(uint8_t val)
 #define write8(x)     {write_8(x); WRITE_DELAY; WR_STROBE }
 #define write16(x)    {write_16(x); WRITE_DELAY; WR_STROBE }
 
-#define READ_8(dst) { RD_STROBE; READ_DELAY; dst = read_8(); RD_IDLE; } 
+#define READ_8(dst) { RD_STROBE; READ_DELAY; dst = read_8(); RD_IDLE; }
 #define READ_16(dst) { RD_STROBE; READ_DELAY; dst = read_16(); RD_IDLE;}
 
 //Data: Teensy pins -> D0-D15 :

@@ -376,7 +376,7 @@ void write_8(uint8_t x)
 #define WRITE_DELAY { }
 #define READ_DELAY  { RD_ACTIVE; }
 #if defined(__STM32F1__)  //MapleCore crts.o does RCC.  not understand regular syntax anyway
-#define GPIO_INIT()      
+#define GPIO_INIT()
 #else
 #define GPIO_INIT()   { RCC->APB2ENR |= RCC_APB2ENR_IOPAEN | RCC_APB2ENR_IOPBEN | RCC_APB2ENR_IOPCEN | RCC_APB2ENR_IOPDEN | RCC_APB2ENR_AFIOEN; \
         AFIO->MAPR |= AFIO_MAPR_SWJ_CFG_1;}
@@ -580,7 +580,7 @@ void write_8(uint8_t x)
 #elif defined(ESP32)       //regular UNO shield on TTGO D1 R32 (ESP32)
 #define LCD_RD  2  //LED
 #define LCD_WR  4
-#define LCD_RS 15  //hard-wired to A2 (GPIO35) 
+#define LCD_RS 15  //hard-wired to A2 (GPIO35)
 #define LCD_CS 33  //hard-wired to A3 (GPIO34)
 #define LCD_RST 32 //hard-wired to A4 (GPIO36)
 
@@ -668,8 +668,8 @@ static void setReadDir()
     pinMode(LCD_D7, INPUT);
 }
 
-#define WRITE_DELAY { WR_ACTIVE2; } //please try this with both PIN_LOW() macros
-#define READ_DELAY  { RD_IDLE4; }
+#define WRITE_DELAY { WR_ACTIVE4; } //please try this with both PIN_LOW() macros
+#define READ_DELAY  { RD_IDLE4; RD_IDLE4; }
 
 #define write8(x)     { write_8(x); WRITE_DELAY; WR_STROBE; }
 #define write16(x)    { uint8_t h = (x)>>8, l = x; write8(h); write8(l); }
