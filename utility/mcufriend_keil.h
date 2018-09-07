@@ -7,6 +7,16 @@
 #include "pin_shield_1.h"     //shield pin macros e.g. A2_PORT, PIN_OUTPUT()
 #include "pin_shield_8.h"     //macros for write_8(), read_8(), setWriteDir(), ...
 
+#define WR_ACTIVE2  {WR_ACTIVE; WR_ACTIVE;}
+#define WR_ACTIVE4  {WR_ACTIVE2; WR_ACTIVE2;}
+#define WR_ACTIVE8  {WR_ACTIVE4; WR_ACTIVE4;}
+#define RD_ACTIVE2  {RD_ACTIVE; RD_ACTIVE;}
+#define RD_ACTIVE4  {RD_ACTIVE2; RD_ACTIVE2;}
+#define RD_ACTIVE8  {RD_ACTIVE4; RD_ACTIVE4;}
+#define RD_ACTIVE16 {RD_ACTIVE8; RD_ACTIVE8;}
+#define WR_IDLE2  {WR_IDLE; WR_IDLE;}
+#define WR_IDLE4  {WR_IDLE2; WR_IDLE2;}
+
 // control pins as used in MCUFRIEND shields 
   #define RD_PORT A0_PORT
   #define RD_PIN  A0_PIN
@@ -40,13 +50,20 @@
 #define WR_STROBE { WR_ACTIVE; WR_IDLE; }         //PWLW=TWRL=50ns
 #define RD_STROBE RD_IDLE, RD_ACTIVE, RD_ACTIVE, RD_ACTIVE   //PWLR=TRDL=150ns
 
-#if defined(TEENSY) || defined(__ARM_ARCH_7EM__) // -O2: F411@100MHz = 1.44s 
-#define WRITE_DELAY { WR_ACTIVE; WR_ACTIVE; WR_ACTIVE; WR_ACTIVE; }
-#define READ_DELAY  { RD_ACTIVE; RD_ACTIVE; RD_ACTIVE; RD_ACTIVE; RD_ACTIVE; RD_ACTIVE; RD_ACTIVE; }
+#if 0
+#elif defined(MK20D5) //
+#define WRITE_DELAY { WR_ACTIVE2; }
+#define READ_DELAY  { RD_ACTIVE4; }
+#elif defined(TEENSY) || defined(__ARM_ARCH_7EM__) // -O2: F411@100MHz = 1.44s 
+#define WRITE_DELAY { WR_ACTIVE4; }
+#define READ_DELAY  { RD_ACTIVE4; RD_ACTIVE2; RD_ACTIVE; }
 #elif defined(__ARM_ARCH_7M__) // -O2: F103@72MHz = 2.68s
 #define WRITE_DELAY { }
 #define READ_DELAY  { RD_ACTIVE;  }
 #elif defined(__ARM_ARCH_6M__) // -O2: F072@48MHz = 5.03s
+#define WRITE_DELAY { }
+#define READ_DELAY  { }
+#else
 #define WRITE_DELAY { }
 #define READ_DELAY  { }
 #endif
