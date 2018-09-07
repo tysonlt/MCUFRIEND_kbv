@@ -19,6 +19,7 @@
 /*
 HX8357C  tWC = 50ns  tWRH = 15ns  tRCFM = 450ns  tRC = 160ns
 ILI9320  tWC =100ns  tWRH = 50ns  tRCFM = 300ns  tRC = 300ns
+ILI9327  tWC = 80ns  tWRH = 25ns  tRCFM = 450ns  tRC = 160ns
 ILI9341  tWC = 66ns  tWRH = 15ns  tRCFM = 450ns  tRC = 160ns
 ILI9481  tWC =100ns  tWRH = 30ns  tRCFM = 450ns  tRC = 450ns
 ILI9486  tWC = 66ns  tWRH = 15ns  tRCFM = 450ns  tRC = 160ns (tWCFM= 286ns on mystery 9486_16)
@@ -29,6 +30,7 @@ RM68140  tWC = 50ns  tWRH = 15ns  tRCFM = 450ns  tRC = 160ns (tWCFM= 119ns)
 SPFD5408 tWC =125ns  tWRH = 70ns  tRCFM = 450ns  tRC = 450ns
 SSD1289  tWC =100ns  tWRH = 50ns  tRCFM =1000ns  tRC =1000ns (tWCFM= 238ns)
 SSD1963  tWC = 26ns  tWRH = 13ns  tRCFM = 110ns  tRC =  72ns
+ST7781   tWC =100ns  tWRH = 50ns  tRCFM = 300ns  tRC = 150ns
 ST7789V  tWC = 66ns  tWRH = 15ns  tRCFM = 450ns  tRC = 160ns
 */
 
@@ -80,13 +82,13 @@ ST7789V  tWC = 66ns  tWRH = 15ns  tRCFM = 450ns  tRC = 160ns
 // ST7789 data sheet says tRC=450ns.    We need ~167ns to read REGs correctly. (10 cycles @ 60MHz )
 // ST7789 says tRC=160ns for ID and tRC=450ns for Frame Memory
 // ILI9341 says tRC=160ns for ID and tRC=450ns for Frame Memory.  They are FASTER
-#define WRITE_DELAY   { }
-#define READ_DELAY    { RD_ACTIVE4; }
+#define WRITE_DELAY   { WR_ACTIVE; }              //1+1 for ILI9327
+#define READ_DELAY    { RD_ACTIVE2; RD_ACTIVE8; } //10+1 readID() for ILI9320 @ 62MHz
 #define write_8(x)    { VPORT2.OUT = x; }
 #define read_8()      ( VPORT2.IN )
 #define setWriteDir() { PORTCFG.VPCTRLA=0x10; PORTCFG.VPCTRLB=0x32; VPORT2.DIR = 0xFF; }
 #define setReadDir()  { VPORT2.DIR = 0x00; }
-#define write8(x)     { write_8(x); WRITE_DELAY; WR_STROBE; }
+#define write8(x)     { write_8(x); WRITE_DELAY; WR_STROBE; WR_IDLE; }
 #define write16(x)    { uint8_t h = (x)>>8, l = x; write8(h); write8(l); }
 #define READ_8(dst)   { RD_STROBE; READ_DELAY; dst = read_8(); RD_IDLE; }
 #define READ_16(dst)  { uint8_t hi; READ_8(hi); READ_8(dst); dst |= (hi << 8); }
